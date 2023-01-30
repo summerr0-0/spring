@@ -2,7 +2,7 @@
 
 예제코드는 [여기](https://github.com/summerr0-0/spring/tree/main/src/main/java/com/example/spring/event) 
 
-### 왜 이벤트 기반으로 코드를 짜야할까?
+## 왜 이벤트 기반으로 코드를 짜야할까?
 
 - 도메인의 강결합을 낮출 수 있다
 
@@ -27,7 +27,7 @@
 
 
 
-### 이벤트 관련 구성 요소
+## 이벤트 관련 구성 요소
 
 - 이멘트를 도입할 때 **이벤트**, **이벤트 생성 주체,** **이벤트 디스패처**, **이벤드 핸들러** 를 구현한다.
 
@@ -42,7 +42,7 @@
 
 
 
-### 스프링에서의 이벤트
+## 스프링에서의 이벤트
 - 스프링에서 제공하는 `ApplicationEventPublisher`와 `@EventListener` 를 이용해서 쉽게 이벤트 발행과 구독이 가능하다
 
 - `ApplicationEventPublisher`
@@ -62,7 +62,7 @@
 
 
 
-### 적용해보기
+## 적용해보기
 
 - 회원가입 후 메시지 전송보내기.
   - 메시지 전송 로직과 회원가입 도메인이 섞이게 된다.
@@ -71,7 +71,7 @@
 - 가입 이벤트를 발행하고 가입 이벤트를 구독하면 된다.
 
 
-**이벤트 발생과 출판을 위한** `Events`
+### **이벤트 발생과 출판을 위한** `Events`
 
 - ApplicationEventPublish가 제공하는 publishEvent를 이용해서 이벤트를 발생시킨다.
 
@@ -95,7 +95,7 @@ public class Events {
 
 
 
-**이벤트 설정을 위한** `EventsConfiguration`
+### **이벤트 설정을 위한** `EventsConfiguration`
 
 - `Events`의 `setPublisher()` 에 이벤트 퍼블리셔를 전달하기 위한 스프링 설정 클래스
 
@@ -117,7 +117,7 @@ public class EventsConfiguration {
 ```
 
 
-**유저 가입 이벤트** `UserJoinedEvent`
+### **유저 가입 이벤트** `UserJoinedEvent`
 
 - 이벤트 발생시 전달할 데이터들을 넣어주면 된다.
 
@@ -141,7 +141,7 @@ public class UserJoinedEvent {
 
 
 
-**이벤트를 처리할 핸들러** `UserJoinedEventHandler`
+### **이벤트를 처리할 핸들러** `UserJoinedEventHandler`
 
 - 이벤트를 처리하는 핸들러를 생성한다.
 
@@ -159,7 +159,7 @@ public void handle(UserJoinedEvent event) {
 
 
 
-**이벤트가 발생하는** `UserController`
+### **이벤트가 발생하는** `UserController`
 
 - 가입시 `Events.raise` 를 이용해 이벤트를 발생시킨다.1
 
