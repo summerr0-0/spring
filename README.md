@@ -6,7 +6,7 @@
 
 
 
-1. [이벤트 발행하기](../summary/EVENT.md)
+1. [이벤트 발행하기](./summary/EVENT.md)
 
 
 
