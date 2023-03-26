@@ -50,11 +50,12 @@
   - 옵저버 패턴의 구현체로 이벤트 프로그래밍에 필요한 기능을 제공해준다
 
 
-    ```java
-       public interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory, MessageSource, ApplicationEventPublisher, ResourcePatternResolver {
-          ...
-       }
-    ```
+```java
+   public interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory, MessageSource, ApplicationEventPublisher, ResourcePatternResolver {
+      ...
+   }
+
+```
 
 
 - `@EventListener`
@@ -145,15 +146,20 @@ public class UserJoinedEvent {
 
 - 이벤트를 처리하는 핸들러를 생성한다.
 
+- Hadler는 빈이 등록되어 있어야 한다
+
 - 여기서는 간단하게 출력만 했지만 핸들러에서 다른 도메인에게 요청을 하면 된다.
 
 - @EventListener에서 구독중인 이벤트가 `UserJoinedEvent.class` 인 것이다.
   - `UserJoinedEvent` 발생시 아래 로직 실행
 
 ```java
-@EventListener(UserJoinedEvent.class)
-public void handle(UserJoinedEvent event) {
+@Component
+public class MessageHandler{
+	@EventListener(UserJoinedEvent.class)
+	public void handle(UserJoinedEvent event) {
     System.out.println(event.getUserName() + "에게 메시지 전송");
+  }
 }
 ```
 
@@ -179,3 +185,22 @@ public class UserController {
 
 ```
 
+
+
+# 트랜잭션
+
+- 일련의 작업에서 트랜잭션을 보장해야 한다면 이벤트에 `@TransactionalEventListener` 를 사용하자
+- 이벤트핸들러에 `@EventListener` 대신 `@TransactionalEventListener` 를 사용하면 된다
+- 설정값
+  - `AFTER_COMMIT` (기본값) - 트랜잭션이 성공적으로 마무리(commit)됬을 때 이벤트 실행
+  - `AFTER_ROLLBACK` - 트랜잭션이 rollback 됬을 때 이벤트 실행
+  - `AFTER_COMPLETION` - 트랜잭션이 마무리 됬을 때(commit or rollback) 이벤트 실행
+  - `BEFORE_COMMIT` - 트랜잭션의 커밋 전에 이벤트 실행
+
+```java
+@TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT , 
+                            classes = UserJoinedEvent.class)
+public void handle(UserJoinedEvent event) {
+  //...
+}
+```
